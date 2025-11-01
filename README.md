@@ -17,7 +17,7 @@
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/lumina-ml-cli.git
+git clone https://github.com/Ayushgirigoswami/Lumina-AutoML.git
 cd lumina-ml-cli
 ```
 
@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 Run the tool with:
 ```bash
-python modern_ml_cli.py
+python lumina_automl.py
 ```
 
 Follow the interactive prompts to:
