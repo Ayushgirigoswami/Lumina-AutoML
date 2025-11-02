@@ -37,6 +37,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LogisticRegression, LinearRegression, Lasso, Ridge
 from sklearn.svm import SVC, SVR
@@ -97,6 +99,7 @@ class ModernMLPipeline:
         self.imputer = None
         self.encoders = {}
         self.metrics = {}
+        self.evaluation_skipped = False
         self.output_dir = OUTPUT_DIR
         self.setup_directories()
         
@@ -538,41 +541,12 @@ class ModernMLPipeline:
             self.numerical_features = X.select_dtypes(include=['int64', 'float64']).columns.tolist()
             self.categorical_features = X.select_dtypes(include=['object', 'category', 'bool']).columns.tolist()
             
-            # 3. Handle missing values
-            task3 = progress.add_task("Handling missing values...", total=100)
+            # 3-5. Defer imputation/encoding/scaling to the Pipeline
+            # We keep features raw here and perform all transforms inside sklearn Pipeline.
+            task3 = progress.add_task("Preparing feature schema for Pipeline...", total=100)
             for i in range(100):
                 time.sleep(0.01)
                 progress.update(task3, advance=1)
-            
-            # For numerical features
-            if self.numerical_features:
-                self.imputer = SimpleImputer(strategy='median')
-                X[self.numerical_features] = self.imputer.fit_transform(X[self.numerical_features])
-            
-            # For categorical features
-            for col in self.categorical_features:
-                X[col] = X[col].fillna(X[col].mode()[0] if not X[col].mode().empty else "Unknown")
-            
-            # 4. Encode categorical features
-            task4 = progress.add_task("Encoding categorical features...", total=100)
-            for i in range(100):
-                time.sleep(0.01)
-                progress.update(task4, advance=1)
-            
-            for col in self.categorical_features:
-                encoder = LabelEncoder()
-                X[col] = encoder.fit_transform(X[col])
-                self.encoders[col] = encoder
-            
-            # 5. Scale numerical features
-            task5 = progress.add_task("Scaling numerical features...", total=100)
-            for i in range(100):
-                time.sleep(0.01)
-                progress.update(task5, advance=1)
-            
-            if self.numerical_features:
-                self.scaler = StandardScaler()
-                X[self.numerical_features] = self.scaler.fit_transform(X[self.numerical_features])
             
             # 6. Split data
             task6 = progress.add_task("Splitting data into train and test sets...", total=100)
@@ -602,15 +576,15 @@ class ModernMLPipeline:
         )
         summary_table.add_row(
             "Missing Values",
-            f"Numerical: Imputed with median, Categorical: Filled with mode"
+            f"Handled inside Pipeline (median for numeric, most_frequent for categorical)"
         )
         summary_table.add_row(
             "Encoding",
-            f"Categorical features encoded using Label Encoding"
+            f"Handled inside Pipeline (OneHotEncoder, handle_unknown=ignore)"
         )
         summary_table.add_row(
             "Scaling",
-            f"Numerical features scaled using StandardScaler"
+            f"Handled inside Pipeline (StandardScaler)"
         )
         summary_table.add_row(
             "Data Split",
@@ -628,11 +602,8 @@ class ModernMLPipeline:
         )
         
         if download_cleaned:
-            # Create a DataFrame with the preprocessed data
-            cleaned_data = pd.DataFrame(
-                np.concatenate([self.X_train, self.X_test]), 
-                columns=self.feature_names
-            )
+            # Create a DataFrame with the prepared raw features (no transforms; Pipeline handles them)
+            cleaned_data = pd.concat([self.X_train, self.X_test], axis=0).copy()
             # Add the target column back
             cleaned_data[self.target_column] = pd.concat([self.y_train, self.y_test]).values
             
@@ -839,8 +810,32 @@ class ModernMLPipeline:
                     time.sleep(0.02)
                     progress.update(train_task, advance=0.5)
                 
-                # Actually train the model
-                self.model.fit(self.X_train, self.y_train)
+                # Build preprocessing ColumnTransformer and full Pipeline
+                numeric_transformer = Pipeline(steps=[
+                    ("imputer", SimpleImputer(strategy="median")),
+                    ("scaler", StandardScaler())
+                ])
+                categorical_transformer = Pipeline(steps=[
+                    ("imputer", SimpleImputer(strategy="most_frequent")),
+                    ("encoder", OneHotEncoder(handle_unknown="ignore"))
+                ])
+
+                preprocessor = ColumnTransformer(
+                    transformers=[
+                        ("num", numeric_transformer, self.numerical_features),
+                        ("cat", categorical_transformer, self.categorical_features)
+                    ]
+                )
+
+                full_pipeline = Pipeline(steps=[
+                    ("preprocess", preprocessor),
+                    ("model", self.model)
+                ])
+
+                # Train the full pipeline on raw features
+                full_pipeline.fit(self.X_train, self.y_train)
+                # Replace self.model with the pipeline for downstream predict/evaluate
+                self.model = full_pipeline
                 
                 # Complete the progress bar
                 for i in range(50, 100):
@@ -850,7 +845,7 @@ class ModernMLPipeline:
             console.print(f"[{COLORS['success']}]✓ Model training complete![/{COLORS['success']}]")
             
             # Save the model
-            model_path = self.output_dir / MODELS_DIR / f"{self.model_name.replace(' ', '_').lower()}.joblib"
+            model_path = self.output_dir / MODELS_DIR / f"{self.model_name.replace(' ', '_').lower()}_pipeline.joblib"
             joblib.dump(self.model, model_path)
             console.print(f"[{COLORS['info']}]Model saved to: {model_path}[/{COLORS['info']}]")
             
@@ -900,6 +895,48 @@ class ModernMLPipeline:
                 return self.train_model()  # Restart the training process
             
             return False
+
+    def ask_evaluation_choice(self) -> bool:
+        """Prompt the user to test the trained model or skip."""
+        # Present a clear, numbered choice to avoid spelling issues
+        choice_table = Table(show_header=True, header_style=f"bold {COLORS['primary']}", box=box.ROUNDED)
+        choice_table.add_column("ID", justify="center")
+        choice_table.add_column("Option")
+        choice_table.add_column("Description")
+        choice_table.add_row(
+            "1",
+            "Test trained model",
+            "Evaluate performance on the held-out test set"
+        )
+        choice_table.add_row(
+            "2",
+            "Skip testing",
+            "Continue to summary and next steps"
+        )
+
+        panel = Panel(
+            choice_table,
+            border_style=COLORS["primary"],
+            box=box.ROUNDED,
+            title=f"[bold {COLORS['secondary']}]Step 5: Model Evaluation (Optional)[/bold {COLORS['secondary']}]",
+            title_align="left"
+        )
+        console.print(panel)
+
+        while True:
+            selection = IntPrompt.ask(
+                f"[{COLORS['accent']}]Choose an option (1=test, 2=skip)[/{COLORS['accent']}]",
+                default=1
+            )
+            if selection in (1, 2):
+                break
+            console.print(f"[{COLORS['error']}]Invalid choice. Please enter 1 or 2.[/{COLORS['error']}]")
+
+        self.evaluation_skipped = (selection == 2)
+        if self.evaluation_skipped:
+            console.print(f"[{COLORS['warning']}]Evaluation skipped by user. Proceeding to summary.[/{COLORS['warning']}]")
+            return False
+        return True
     
     def evaluate_model(self) -> bool:
         """Step 5: Model evaluation"""
@@ -1131,82 +1168,67 @@ class ModernMLPipeline:
         )
         console.print(step_panel)
         
-        # Create a unified summary panel with clear sections
+        # Create tables for summary and metrics (no extra prints outside the final layout)
         summary_table = Table(show_header=False, box=None, padding=(0, 1))
         summary_table.add_column("Pipeline Steps", style=COLORS["success"])
-        
         summary_table.add_row("✅ Data loaded and preprocessed")
         summary_table.add_row("✅ Target variable selected")
         summary_table.add_row("✅ Model trained successfully")
-        summary_table.add_row("✅ Model evaluated and visualized")
+        if self.evaluation_skipped:
+            summary_table.add_row("⏭ Evaluation skipped by user")
+        else:
+            summary_table.add_row("✅ Model evaluated and visualized")
         summary_table.add_row("✅ Results and artifacts saved")
-        
-        # Create metrics table
+
         metrics_table = Table(show_header=False, box=None, padding=(0, 1))
         metrics_table.add_column("Metrics", style=COLORS["info"])
-        
         metrics_table.add_row(f"[bold {COLORS['secondary']}]Model: {self.model_name}[/bold {COLORS['secondary']}]")
-        
-        if self.task_type == "classification":
-            metrics_table.add_row(f"Task: Classification")
-            metrics_table.add_row(f"Accuracy: {self.metrics['accuracy']:.4f}")
-            metrics_table.add_row(f"F1 Score: {self.metrics['f1']:.4f}")
+        if self.evaluation_skipped or not self.metrics:
+            metrics_table.add_row("Task: " + (self.task_type.capitalize() if self.task_type else "N/A"))
+            metrics_table.add_row("Evaluation was skipped; no metrics to display.")
         else:
-            metrics_table.add_row(f"Task: Regression")
-            metrics_table.add_row(f"R² Score: {self.metrics['r2']:.4f}")
-            metrics_table.add_row(f"RMSE: {self.metrics['rmse']:.4f}")
-        
-        # Create a grid layout with two panels side by side
-        grid = Table.grid(padding=2)
-        grid.add_column("Summary")
-        grid.add_column("Metrics")
-        
-        # Add the panels to the grid
-        summary_panel = Panel(
-            summary_table,
-            border_style=COLORS["primary"],
-            box=box.ROUNDED,
-            title=f"[bold]Pipeline Summary[/bold]",
-            title_align="center",
-            width=40
+            if self.task_type == "classification":
+                metrics_table.add_row("Task: Classification")
+                metrics_table.add_row(f"Accuracy: {self.metrics.get('accuracy', float('nan')):.4f}")
+                metrics_table.add_row(f"F1 Score: {self.metrics.get('f1', float('nan')):.4f}")
+            else:
+                metrics_table.add_row("Task: Regression")
+                metrics_table.add_row(f"R² Score: {self.metrics.get('r2', float('nan')):.4f}")
+                metrics_table.add_row(f"RMSE: {self.metrics.get('rmse', float('nan')):.4f}")
+
+        # Build a single cohesive layout to avoid duplicate sections
+        two_col_grid = Table.grid(padding=2)
+        two_col_grid.add_column("Summary")
+        two_col_grid.add_column("Metrics")
+        two_col_grid.add_row(
+            Panel(summary_table, border_style=COLORS["primary"], box=box.ROUNDED, title="[bold]Pipeline Summary[/bold]", title_align="center", width=40),
+            Panel(metrics_table, border_style=COLORS["primary"], box=box.ROUNDED, title="[bold]Model Performance[/bold]", title_align="center", width=40)
         )
-        
-        metrics_panel = Panel(
-            metrics_table,
-            border_style=COLORS["primary"],
-            box=box.ROUNDED,
-            title=f"[bold]Model Performance[/bold]",
-            title_align="center",
-            width=40
-        )
-        
-        grid.add_row(summary_panel, metrics_panel)
-        console.print(grid)
-        
-        # Output directory information
-        console.print(f"\n[bold {COLORS['secondary']}]Output Directory:[/bold {COLORS['secondary']}] {self.output_dir}")
-        console.print(f"[{COLORS['info']}]• Models: {self.output_dir / MODELS_DIR}[/{COLORS['info']}]")
-        console.print(f"[{COLORS['info']}]• Reports: {self.output_dir / REPORTS_DIR}[/{COLORS['info']}]")
-        console.print(f"[{COLORS['info']}]• Visualizations: {self.output_dir / VISUALIZATIONS_DIR}[/{COLORS['info']}]")
-        
-        # Next steps
-        next_steps_panel = Panel(
-            "\n".join([
-                f"[{COLORS['info']}]1. Explore the saved visualizations to gain insights[/{COLORS['info']}]",
-                f"[{COLORS['info']}]2. Use the trained model for predictions on new data[/{COLORS['info']}]",
-                f"[{COLORS['info']}]3. Try different models or hyperparameter tuning for better performance[/{COLORS['info']}]",
-                f"[{COLORS['info']}]4. Deploy the model to a production environment[/{COLORS['info']}]"
-            ]),
-            border_style=COLORS["accent"],
-            box=box.ROUNDED,
-            title=f"[bold]Next Steps[/bold]",
-            title_align="center"
-        )
-        
-        console.print(next_steps_panel)
-        
+
+        artifacts_table = Table(show_header=False, box=None, padding=(0, 1))
+        artifacts_table.add_column("Artifacts", style=COLORS["info"])
+        artifacts_table.add_row(f"Output Directory: {self.output_dir}")
+        artifacts_table.add_row(f"• Models: {self.output_dir / MODELS_DIR}")
+        artifacts_table.add_row(f"• Reports: {self.output_dir / REPORTS_DIR}")
+        artifacts_table.add_row(f"• Visualizations: {self.output_dir / VISUALIZATIONS_DIR}")
+
+        next_steps = "\n".join([
+            f"[{COLORS['info']}]1. Explore the saved visualizations to gain insights[/{COLORS['info']}]",
+            f"[{COLORS['info']}]2. Use the trained model for predictions on new data[/{COLORS['info']}]",
+            f"[{COLORS['info']}]3. Try different models or hyperparameter tuning for better performance[/{COLORS['info']}]",
+            f"[{COLORS['info']}]4. Deploy the model to a production environment[/{COLORS['info']}]"
+        ])
+
+        main_grid = Table.grid(padding=1)
+        main_grid.add_column("Full")
+        main_grid.add_row(Panel(two_col_grid, border_style=COLORS["primary"], box=box.ROUNDED))
+        main_grid.add_row(Panel(artifacts_table, border_style=COLORS["accent"], box=box.ROUNDED, title="[bold]Artifacts[/bold]", title_align="center"))
+        main_grid.add_row(Panel(next_steps, border_style=COLORS["accent"], box=box.ROUNDED, title="[bold]Next Steps[/bold]", title_align="center"))
+
+        console.print(main_grid)
+
         # Farewell message
-        console.print(f"\n[bold {COLORS['secondary']}]Thank you for using Modern ML Pipeline![/bold {COLORS['secondary']}]")
+        console.print(f"\n[bold {COLORS['secondary']}]Thank you for using Lumina AutoML![/bold {COLORS['secondary']}]")
         console.print(f"[{COLORS['info']}]Run this tool again to create another ML pipeline.[/{COLORS['info']}]")
 
 def main():
@@ -1218,12 +1240,116 @@ def main():
         if ml_pipeline.select_target():
             if ml_pipeline.preprocess_data():
                 if ml_pipeline.train_model():
-                    if ml_pipeline.evaluate_model():
-                        ml_pipeline.show_summary()
+                    # Ask whether to evaluate or skip
+                    if ml_pipeline.ask_evaluation_choice():
+                        # Evaluate if chosen (Pipeline handles preprocessing)
+                        ml_pipeline.evaluate_model()
+                    # Always show summary next
+                    ml_pipeline.show_summary()
+
+
+def predict_cli():
+    """CLI mode to load a saved Pipeline and score new, unseen data."""
+    console.clear()
+    step_panel = Panel(
+        f"[{COLORS['info']}]Load a saved Pipeline and run predictions on new data.[/{COLORS['info']}]",
+        border_style=COLORS["primary"],
+        title=f"[bold {COLORS['secondary']}]Predict Mode[/bold {COLORS['secondary']}]",
+        title_align="left"
+    )
+    console.print(step_panel)
+
+    # Ask for pipeline file path
+    pipeline_path_str = Prompt.ask(
+        f"[{COLORS['accent']}]Enter path to saved pipeline (.joblib)[/{COLORS['accent']}]",
+        default=str(Path.cwd() / "pipeline.joblib")
+    )
+    pipeline_path = Path(pipeline_path_str)
+    if not pipeline_path.exists():
+        console.print(f"[{COLORS['error']}]Pipeline file not found: {pipeline_path}[/{COLORS['error']}]")
+        return
+
+    # Load the pipeline
+    try:
+        pipeline = joblib.load(pipeline_path)
+    except Exception as e:
+        console.print(f"[{COLORS['error']}]Failed to load pipeline: {e}[/{COLORS['error']}]")
+        return
+
+    # Ask for data path
+    data_path_str = Prompt.ask(
+        f"[{COLORS['accent']}]Enter path to new data (CSV or Parquet)[/{COLORS['accent']}]",
+        default=str(Path.cwd() / "new_data.csv")
+    )
+    data_path = Path(data_path_str)
+    if not data_path.exists():
+        console.print(f"[{COLORS['error']}]Data file not found: {data_path}[/{COLORS['error']}]")
+        return
+
+    # Load data based on extension
+    try:
+        if data_path.suffix.lower() == ".csv":
+            new_data = pd.read_csv(data_path)
+        elif data_path.suffix.lower() in {".parquet", ".pq"}:
+            try:
+                new_data = pd.read_parquet(data_path)
+            except Exception as e:
+                console.print(f"[{COLORS['error']}]Failed to read Parquet. Install 'pyarrow' or 'fastparquet'. Error: {e}[/{COLORS['error']}]")
+                return
+        else:
+            console.print(f"[{COLORS['error']}]Unsupported file type: {data_path.suffix}[/{COLORS['error']}]")
+            return
+    except Exception as e:
+        console.print(f"[{COLORS['error']}]Failed to load data: {e}[/{COLORS['error']}]")
+        return
+
+    # Run predictions
+    try:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn(f"[{COLORS['info']}]{{task.description}}[/{COLORS['info']}]"),
+            BarColumn(complete_style=COLORS["primary"]),
+            TimeElapsedColumn(),
+            console=console
+        ) as progress:
+            task = progress.add_task("Running predictions...", total=100)
+            for i in range(100):
+                time.sleep(0.01)
+                progress.update(task, advance=1)
+
+        preds = pipeline.predict(new_data)
+    except Exception as e:
+        console.print(f"[{COLORS['error']}]Prediction failed: {e}[/{COLORS['error']}]")
+        return
+
+    # Save predictions
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    out_dir = Path(f"ml_output_{timestamp}")
+    reports_dir = out_dir / REPORTS_DIR
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    preds_path = reports_dir / "predictions.csv"
+    try:
+        pd.DataFrame({"prediction": preds}).to_csv(preds_path, index=False)
+    except Exception as e:
+        console.print(f"[{COLORS['error']}]Failed to save predictions: {e}[/{COLORS['error']}]")
+        return
+
+    console.print(
+        Panel(
+            f"[{COLORS['success']}]✓ Predictions saved to: {preds_path}[/{COLORS['success']}]",
+            border_style=COLORS["primary"],
+            box=box.ROUNDED,
+            title=f"[bold {COLORS['secondary']}]Done[/bold {COLORS['secondary']}]",
+            title_align="left"
+        )
+    )
 
 if __name__ == "__main__":
     try:
-        main()
+        if "--predict" in sys.argv:
+            predict_cli()
+        else:
+            main()
     except KeyboardInterrupt:
         console.print(f"\n[{COLORS['warning']}]Pipeline interrupted. Exiting...[/{COLORS['warning']}]")
     except Exception as e:
