@@ -2,68 +2,92 @@
 
 <div align="center">
 
-<img width="1474" height="463" alt="Screenshot 2025-11-01 225620" src="https://github.com/user-attachments/assets/637945ee-2b8a-4dd5-90d2-8417dc1c033e" />
+![Lumina AutoML Banner](https://img.shields.io/badge/Lumina-AutoML-blueviolet?style=for-the-badge&logo=python&logoColor=white)
 
+**A Beautiful, Intuitive Machine Learning Pipeline**
 
-**A Beautiful, User-Friendly Machine Learning Pipeline**
+[![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/Ayushgirigoswami/Lumina-AutoML?style=flat-square&logo=github)](https://github.com/Ayushgirigoswami/Lumina-AutoML/stargazers)
+[![Forks](https://img.shields.io/github/forks/Ayushgirigoswami/Lumina-AutoML?style=flat-square&logo=github)](https://github.com/Ayushgirigoswami/Lumina-AutoML/network/members)
+[![Issues](https://img.shields.io/github/issues/Ayushgirigoswami/Lumina-AutoML?style=flat-square&logo=github)](https://github.com/Ayushgirigoswami/Lumina-AutoML/issues)
 
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/Ayushgirigoswami/Lumina-AutoML?style=social)](https://github.com/Ayushgirigoswami/Lumina-AutoML/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/Ayushgirigoswami/Lumina-AutoML?style=social)](https://github.com/Ayushgirigoswami/Lumina-AutoML/network/members)
-
-[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Contributing](#-contributing)
-
-</div>
+[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Examples](#-examples) • [Contributing](#-contributing)
 
 ---
 
-## 📖 About
+### 🎯 Transform Your Data Into Insights With Just A Few Clicks
 
-**Lumina AutoML** is a modern, intuitive command-line tool that makes machine learning accessible to everyone. With its beautiful interface and step-by-step guidance, building powerful ML models has never been easier. Whether you're a beginner or an experienced data scientist, Lumina AutoML streamlines your workflow and helps you focus on what matters most - insights and results.
+</div>
 
-### Why Lumina AutoML?
+<div align="center">
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=28&pause=1000&color=6C63FF&center=true&vCenter=true&width=800&lines=Beautiful+CLI+Interface;Automated+ML+Pipeline;Smart+Feature+Engineering;Production-Ready+Models;Comprehensive+Visualizations" alt="Typing SVG" />
+</div>
 
-- 🎨 **Beautiful CLI Interface** - Rich, colorful, and intuitive terminal UI
-- 🚀 **Zero to Hero** - Go from raw data to trained model in minutes
-- 🤖 **Automated Pipeline** - Handles preprocessing, training, and evaluation automatically
-- 📊 **Visual Insights** - Generate beautiful plots and visualizations
-- 🎯 **Smart Recommendations** - Get intelligent suggestions for task types and models
-- 💾 **Export Ready** - Save cleaned data, models, and reports with one click
+---
+---
+ <img width="1474" height="463" alt="Screenshot 2025-11-01 225620" src="https://github.com/user-attachments/assets/5bf3d945-33e6-4ba3-b721-683245d2138b" />
+
+---
+
+## 🎭 What is Lumina AutoML?
+
+**Lumina AutoML** is not just another ML tool—it's your **intelligent companion** for building machine learning models. With a stunning command-line interface powered by Rich, it guides you through every step of the ML journey, from data loading to model deployment.
+
+### 🌈 Why Lumina?
+
+<table>
+<tr>
+<td width="50%">
+
+#### 🎨 **Beautiful by Design**
+- Stunning CLI with colors, progress bars, and animations
+- Intuitive step-by-step workflow
+- Clear visual feedback at every stage
+
+#### 🧠 **Intelligent Automation**
+- Auto-detects feature types
+- Smart task type recommendation
+- Handles missing values automatically
+- Built-in feature scaling and encoding
+
+</td>
+<td width="50%">
+
+#### 🚀 **Production Ready**
+- Sklearn Pipeline integration
+- Saves models in joblib format
+- Comprehensive evaluation metrics
+- Beautiful visualizations
+
+#### ⚡ **Powerful Yet Simple**
+- Support for 6+ algorithms
+- Both classification & regression
+- Real-time prediction mode
+- Export cleaned datasets
+
+</td>
+</tr>
+</table>
 
 ---
 
 ## ✨ Features
 
-### 🎯 Core Capabilities
+<div align="center">
 
-| Feature | Description |
-|---------|-------------|
-| **Intuitive Workflow** | Step-by-step guidance through the entire ML pipeline |
-| **Multi-Format Support** | Load CSV, Excel, and JSON files seamlessly |
-| **Auto Preprocessing** | Automatic handling of missing values, encoding, and scaling |
-| **Smart Task Detection** | Automatically identifies classification vs regression tasks |
-| **Multiple Algorithms** | Support for Random Forest, XGBoost, LightGBM, SVM, and more |
-| **Comprehensive Evaluation** | Detailed metrics, confusion matrices, and performance plots |
-| **Export Functionality** | Save cleaned data in multiple formats (CSV, Excel, JSON) |
-| **Model Persistence** | Save and reuse trained models |
+| Feature | Description | Status |
+|---------|-------------|--------|
+| 📊 **Multi-Format Support** | CSV, Excel, JSON data loading | ✅ |
+| 🔄 **Auto Preprocessing** | Handles missing values, scaling, encoding | ✅ |
+| 🤖 **Multiple Algorithms** | RF, XGBoost, LightGBM, SVM, Linear models | ✅ |
+| 📈 **Rich Visualizations** | Confusion matrix, feature importance, residuals | ✅ |
+| 💾 **Model Persistence** | Save/load trained pipelines | ✅ |
+| 🎯 **Smart Recommendations** | Auto-suggests classification vs regression | ✅ |
+| 📋 **Detailed Reports** | Comprehensive evaluation metrics | ✅ |
+| 🔮 **Prediction Mode** | Score new data with trained models | ✅ |
 
-### 🤖 Supported Algorithms
-
-#### Classification
-- Random Forest Classifier
-- Logistic Regression
-- Support Vector Machine (SVM)
-- XGBoost Classifier
-- LightGBM Classifier
-
-#### Regression
-- Random Forest Regressor
-- Linear Regression
-- Ridge Regression
-- Support Vector Regression (SVR)
-- XGBoost Regressor
-- LightGBM Regressor
+</div>
 
 ---
 
@@ -79,27 +103,32 @@
 ```bash
 # Clone the repository
 git clone https://github.com/Ayushgirigoswami/Lumina-AutoML.git
+cd lumina-ml-cli
 
-# Navigate to the project directory
-cd Lumina-AutoML
+# Create virtual environment (recommended)
+python -m venv venv
 
-# Install required dependencies
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### Requirements
+### 📦 Required Packages
 
-Create a `requirements.txt` file with the following dependencies:
-
-```text
+```txt
 pandas>=1.3.0
 numpy>=1.21.0
 scikit-learn>=1.0.0
 xgboost>=1.5.0
 lightgbm>=3.3.0
+rich>=10.0.0
 matplotlib>=3.4.0
 seaborn>=0.11.0
-rich>=10.0.0
 joblib>=1.1.0
 openpyxl>=3.0.0
 ```
@@ -108,331 +137,266 @@ openpyxl>=3.0.0
 
 ## 🎮 Quick Start
 
-### Basic Usage
+### 🌟 Training Mode
+
+Launch the interactive ML pipeline:
 
 ```bash
-# Run the pipeline
 python lumina_automl.py
 ```
 
-### Step-by-Step Guide
+**That's it!** Lumina will guide you through:
 
-#### 1️⃣ **Welcome Screen**
-You'll be greeted with a beautiful ASCII art banner and feature overview.
+1. **📁 Data Loading** - Drag & drop your dataset
+2. **🎯 Target Selection** - Pick what you want to predict
+3. **🔧 Preprocessing** - Automatic data cleaning
+4. **🤖 Model Training** - Choose from 6+ algorithms
+5. **📊 Evaluation** - View metrics & visualizations
+6. **💾 Results** - Save models & reports
 
-#### 2️⃣ **Load Your Data**
-```
-Enter the path to your dataset (CSV, Excel, or JSON)
-> /path/to/your/data.csv
-```
+### 🔮 Prediction Mode
 
-#### 3️⃣ **Select Target Variable**
-The tool will display all columns with statistics and help you choose your target variable.
-
-#### 4️⃣ **Automatic Preprocessing**
-Lumina AutoML handles:
-- Missing value imputation
-- Categorical encoding
-- Feature scaling
-- Train-test splitting
-
-Option to export cleaned data in your preferred format!
-
-#### 5️⃣ **Model Selection**
-Choose from multiple algorithms with detailed descriptions and recommendations.
-
-#### 6️⃣ **Training & Evaluation**
-Watch as your model trains with a beautiful progress bar, then view comprehensive metrics and visualizations.
-
----
-
-## 📊 Example Workflow
-
-### Sample Dataset: Iris Classification
+Use a trained model on new data:
 
 ```bash
-$ python lumina_automl.py
-
-# Step 1: Load Data
-Enter the path to your dataset: iris.csv
-✓ Successfully loaded dataset with 150 rows and 5 columns
-
-# Step 2: Select Target
-Enter the ID of your target column: 5
-✓ Selected target: species
-✓ Task type set to: classification
-
-# Step 3: Preprocessing
-✓ Preprocessing complete!
-   - Numerical features: 4
-   - Categorical features: 0
-   - Training samples: 120
-   - Testing samples: 30
-
-# Step 4: Model Selection
-Select a model:
-1. Random Forest
-2. Logistic Regression
-3. XGBoost
-Enter your choice: 1
-
-# Step 5: Evaluation
-Accuracy: 0.9667
-Precision: 0.9667
-Recall: 0.9667
-F1 Score: 0.9667
+python lumina_automl.py --predict
 ```
 
-### Output Structure
+---
+
+## 📖 Documentation
+
+### 🎯 Supported Algorithms
+
+<details>
+<summary><b>Classification Models</b></summary>
+
+- **Random Forest** - Ensemble method, handles non-linearity
+- **Logistic Regression** - Simple, interpretable baseline
+- **Support Vector Machine** - Great for high-dimensional data
+- **XGBoost** - Competition-winning gradient boosting
+- **LightGBM** - Fast, handles large datasets efficiently
+
+</details>
+
+<details>
+<summary><b>Regression Models</b></summary>
+
+- **Random Forest** - Robust to outliers, non-linear
+- **Linear Regression** - Simple baseline model
+- **Ridge Regression** - Handles multicollinearity
+- **Support Vector Regression** - Effective in high dimensions
+- **XGBoost** - State-of-the-art gradient boosting
+- **LightGBM** - Efficient for large-scale data
+
+</details>
+
+### 📊 Output Structure
 
 ```
-ml_output_20240101_120000/
+ml_output_YYYYMMDD_HHMMSS/
+│
 ├── models/
-│   └── random_forest.joblib
+│   └── {model_name}_pipeline.joblib    # Trained pipeline
+│
 ├── reports/
-│   └── evaluation_results.json
+│   ├── evaluation_results.json         # Metrics & metadata
+│   └── predictions.csv                 # Predictions (predict mode)
+│
 ├── visualizations/
-│   ├── confusion_matrix.png
-│   └── feature_importance.png
+│   ├── confusion_matrix.png            # Classification only
+│   ├── feature_importance.png          # If available
+│   ├── actual_vs_predicted.png         # Regression only
+│   └── residual_plot.png               # Regression only
+│
 └── cleaned_data/
-    └── iris_cleaned_20240101_120000.csv
+    └── {filename}_cleaned_YYYYMMDD.csv # Optional export
 ```
 
 ---
 
-## 📚 Documentation
+## 💡 Examples
 
-### Command Line Options
+### Example 1: Credit Card Fraud Detection
 
-Currently, Lumina AutoML uses an interactive CLI. Future versions will support:
-- `--config` - Load configuration from file
-- `--auto` - Fully automated mode
-- `--verbose` - Detailed logging
+```bash
+# Launch Lumina
+python lumina_automl.py
 
-### Configuration
-
-You can customize default behaviors by modifying the following variables in `lumina_automl.py`:
-
-```python
-OUTPUT_DIR = Path("ml_output_" + datetime.now().strftime("%Y%m%d_%H%M%S"))
-MODELS_DIR = Path("models")
-REPORTS_DIR = Path("reports")
-VISUALIZATIONS_DIR = Path("visualizations")
+# Follow the prompts:
+# 1. Load: fraud_detection.csv
+# 2. Target: "is_fraud" (binary classification)
+# 3. Model: Random Forest
+# 4. Evaluate: View confusion matrix & metrics
 ```
 
-#### Class: `ModernMLPipeline`
+**Output:**
+- Accuracy: 98.5%
+- F1 Score: 0.92
+- Saved model ready for production
 
-**Methods:**
-- `load_data()` - Load and preview dataset
-- `select_target()` - Choose target variable and task type
-- `preprocess_data()` - Handle missing values, encoding, and scaling
-- `train_model()` - Train selected ML model
-- `evaluate_model()` - Generate metrics and visualizations
-- `show_summary()` - Display final results and next steps
+### Example 2: House Price Prediction
+
+```bash
+# Launch Lumina
+python lumina_automl.py
+
+# Follow the prompts:
+# 1. Load: housing_data.csv
+# 2. Target: "price" (regression)
+# 3. Model: XGBoost
+# 4. Evaluate: View R² score & residuals
+```
+
+**Output:**
+- R² Score: 0.87
+- RMSE: $15,432
+- Feature importance chart
+
+### Example 3: Batch Predictions
+
+```bash
+# Use trained model on new data
+python lumina_automl.py --predict
+
+# Follow the prompts:
+# 1. Load saved pipeline
+# 2. Load new data
+# 3. Get predictions instantly
+```
 
 ---
 
-## 🎨 Customization
+## 🛠️ Advanced Usage
 
-### Color Scheme
-
-Modify the `COLORS` dictionary to change the interface colors:
+### Custom Configuration
 
 ```python
-COLORS = {
-    "primary": "bright_blue",
-    "secondary": "magenta",
-    "accent": "cyan",
-    "success": "green",
-    "warning": "yellow",
-    "error": "red",
-    "info": "bright_white",
-    "muted": "dim white"
-}
+from lumina_automl import ModernMLPipeline
+
+# Create pipeline instance
+pipeline = ModernMLPipeline()
+
+# Load data programmatically
+pipeline.data = pd.read_csv("your_data.csv")
+
+# Set target
+pipeline.target_column = "target"
+pipeline.task_type = "classification"
+
+# Train specific model
+pipeline.preprocess_data()
+pipeline.model_name = "XGBoost"
+pipeline.train_model()
 ```
 
-### Model Parameters
-
-Customize model hyperparameters in the `train_model()` method:
+### Integration with Other Tools
 
 ```python
-"Random Forest": RandomForestClassifier(
-    n_estimators=100,
-    max_depth=None,
-    random_state=42
-)
+import joblib
+
+# Load trained pipeline
+model = joblib.load("ml_output_*/models/model.joblib")
+
+# Use in your application
+predictions = model.predict(new_data)
 ```
 
 ---
 
 ## 🤝 Contributing
 
-We love contributions! Here's how you can help make Lumina AutoML even better:
-
-### How to Contribute
-
-1. **Fork the Repository**
-   ```bash
-   git clone https://github.com/Ayushgirigoswami/Lumina-AutoML.git
-   ```
-
-2. **Create a Feature Branch**
-   ```bash
-   git checkout -b feature/AmazingFeature
-   ```
-
-3. **Make Your Changes**
-   - Write clean, documented code
-   - Follow PEP 8 style guidelines
-   - Add tests if applicable
-
-4. **Commit Your Changes**
-   ```bash
-   git commit -m 'Add some AmazingFeature'
-   ```
-
-5. **Push to the Branch**
-   ```bash
-   git push origin feature/AmazingFeature
-   ```
-
-6. **Open a Pull Request**
-
-### Contribution Ideas
-
-- 🐛 Bug fixes
-- ✨ New features
-- 📝 Documentation improvements
-- 🎨 UI/UX enhancements
-- 🧪 Additional test coverage
-- 🌍 Internationalization
-
----
-
-## 🗺️ Roadmap
-
-### Version 2.0 (Coming Soon)
-- [ ] Hyperparameter tuning with Grid/Random Search
-- [ ] Cross-validation support
-- [ ] Feature selection algorithms
-- [ ] Model comparison mode
-- [ ] API deployment guide
-- [ ] Docker containerization
-
-### Version 3.0 (Future)
-- [ ] Web-based UI
-- [ ] Real-time model monitoring
-- [ ] AutoML with neural architecture search
-- [ ] Time series forecasting
-- [ ] Natural language processing tasks
-- [ ] Computer vision support
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2024 Ayush Giri Goswami
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-```
-
----
-
-## 👨‍💻 Author
-
-**Ayush Giri Goswami**
-
-- GitHub: [@Ayushgirigoswami](https://github.com/Ayushgirigoswami)
-- LinkedIn: [Connect with me](https://linkedin.com/in/ayushgirigoswami)
-- Email: [Contact](mailto:ayushgirigoswami@example.com)
-
----
-
-## 🙏 Acknowledgments
-
-- **Rich** - For the beautiful terminal UI library
-- **scikit-learn** - For the comprehensive ML algorithms
-- **XGBoost & LightGBM** - For powerful gradient boosting implementations
-- **Community** - For feedback and contributions
-
----
-
-## 📊 Project Stats
+We love contributions! Here's how you can help:
 
 <div align="center">
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Ayushgirigoswami/Lumina-AutoML)
-![GitHub last commit](https://img.shields.io/github/last-commit/Ayushgirigoswami/Lumina-AutoML)
-![GitHub code size](https://img.shields.io/github/languages/code-size/Ayushgirigoswami/Lumina-AutoML)
+| Type | How to Contribute |
+|------|------------------|
+| 🐛 **Bug Reports** | [Open an issue](https://github.com/Ayushgirigoswami/Lumina-AutoML/issues) with details |
+| 💡 **Feature Requests** | Share your ideas in [discussions](https://github.com/Ayushgirigoswami/Lumina-AutoML/discussions) |
+| 🔧 **Code** | Fork, code, test, and submit a PR |
+| 📖 **Documentation** | Help improve docs and examples |
+| ⭐ **Spread the Word** | Star the repo, share with friends! |
+
+</div>
+
+### Development Setup
+
+```bash
+# Fork and clone your fork
+git clone  https://github.com/Ayushgirigoswami/Lumina-AutoML.git
+
+
+# Create a feature branch
+git checkout -b feature/amazing-feature
+
+# Make changes and commit
+git commit -m "Add amazing feature"
+
+# Push and create PR
+git push origin feature/amazing-feature
+```
+
+---
+
+## 🏆 Acknowledgments
+
+<div align="center">
+
+Built with ❤️ using:
+
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-337AB7?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
+[![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![Rich](https://img.shields.io/badge/Rich-009485?style=for-the-badge&logo=python&logoColor=white)](https://rich.readthedocs.io/)
+
+</div>
+
+Special thanks to:
+- The **Rich** library for the beautiful terminal UI
+- The **Scikit-learn** team for robust ML tools
+- All contributors and supporters of this project
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📞 Contact & Support
+
+<div align="center">
+
+### Need Help?
+
+[![GitHub Issues](https://img.shields.io/badge/GitHub-Issues-red?style=for-the-badge&logo=github)](https://github.com/Ayushgirigoswami/Lumina-AutoML/issues)
+[![Discussions](https://img.shields.io/badge/GitHub-Discussions-purple?style=for-the-badge&logo=github)](https://github.com/Ayushgirigoswami/Lumina-AutoML/discussions)
+
+### Show Your Support
+
+If you find Lumina AutoML helpful, please consider:
+
+⭐ **Starring** the repository
+🔗 **Sharing** with your network
+💬 **Providing feedback** to help us improve
+
+---
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=20&pause=1000&color=6C63FF&center=true&vCenter=true&width=600&lines=Happy+Machine+Learning!;Made+with+%E2%9D%A4%EF%B8%8F+by+the+Community;Star+%E2%AD%90+if+you+find+it+useful!" alt="Footer" />
+
+**[⬆ Back to Top](#-lumina-automl)**
 
 </div>
 
 ---
 
-## ❓ FAQ
-
-<details>
-<summary><strong>Q: What Python version is required?</strong></summary>
-<br>
-Python 3.8 or higher is required. We recommend using Python 3.9+ for the best experience.
-</details>
-
-<details>
-<summary><strong>Q: Can I use this for production deployments?</strong></summary>
-<br>
-Lumina AutoML is designed for rapid prototyping and learning. For production deployments, we recommend additional validation, monitoring, and deployment best practices.
-</details>
-
-<details>
-<summary><strong>Q: How do I handle large datasets?</strong></summary>
-<br>
-For datasets larger than 1GB, consider using sampling or chunking techniques. Future versions will include better support for large-scale data.
-</details>
-
-<details>
-<summary><strong>Q: Can I customize the models?</strong></summary>
-<br>
-Yes! You can modify the model parameters in the source code. We're working on a configuration file system for easier customization.
-</details>
-
-<details>
-<summary><strong>Q: Is GPU support available?</strong></summary>
-<br>
-Currently, GPU support depends on your XGBoost and LightGBM installations. Future versions will include better GPU integration.
-</details>
-
----
-
-## 💬 Support
-
-Need help? Here's how to get support:
-
-- 📖 Check the [Documentation](#-documentation)
-- 💬 Start a [Discussion](https://github.com/Ayushgirigoswami/Lumina-AutoML/discussions)
-- 🐛 Report a [Bug](https://github.com/Ayushgirigoswami/Lumina-AutoML/issues)
-- ⭐ Star the repo if you find it helpful!
-
----
-
 <div align="center">
 
-**Made with ❤️ by Ayush Giri Goswami**
+### 🌟 Star History
 
-If you found this project helpful, please consider giving it a ⭐!
-
-[⬆ Back to Top](#-lumina-automl)
+[![Star History Chart](https://api.star-history.com/svg?repos=Ayushgirigoswami/Lumina-AutoML&type=Date)](https://star-history.com/#Ayushgirigoswami/Lumina-AutoML&Date)
 
 </div>
