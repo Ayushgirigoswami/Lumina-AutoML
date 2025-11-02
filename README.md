@@ -2,7 +2,8 @@
 
 <div align="center">
 
-![Lumina AutoML Banner](https://raw.githubusercontent.com/Ayushgirigoswami/Lumina-AutoML/main/assets/banner.png)
+<img width="1474" height="463" alt="Screenshot 2025-11-01 225620" src="https://github.com/user-attachments/assets/637945ee-2b8a-4dd5-90d2-8417dc1c033e" />
+
 
 **A Beautiful, User-Friendly Machine Learning Pipeline**
 
@@ -199,26 +200,6 @@ ml_output_20240101_120000/
 
 ---
 
-## 📸 Screenshots
-
-<div align="center">
-
-### Welcome Screen
-![Welcome Screen](https://via.placeholder.com/800x400/1e1e1e/00d4ff?text=Lumina+AutoML+Welcome+Screen)
-
-### Data Loading
-![Data Loading](https://via.placeholder.com/800x400/1e1e1e/00d4ff?text=Beautiful+Data+Preview+Table)
-
-### Model Training
-![Model Training](https://via.placeholder.com/800x400/1e1e1e/00d4ff?text=Progress+Bar+Animation)
-
-### Results Dashboard
-![Results](https://via.placeholder.com/800x400/1e1e1e/00d4ff?text=Comprehensive+Metrics+Display)
-
-</div>
-
----
-
 ## 📚 Documentation
 
 ### Command Line Options
@@ -238,8 +219,6 @@ MODELS_DIR = Path("models")
 REPORTS_DIR = Path("reports")
 VISUALIZATIONS_DIR = Path("visualizations")
 ```
-
-### API Reference
 
 #### Class: `ModernMLPipeline`
 
@@ -434,16 +413,6 @@ Yes! You can modify the model parameters in the source code. We're working on a 
 <br>
 Currently, GPU support depends on your XGBoost and LightGBM installations. Future versions will include better GPU integration.
 </details>
-
----
-
-## 🌟 Star History
-
-<div align="center">
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Ayushgirigoswami/Lumina-AutoML&type=Date)](https://star-history.com/#Ayushgirigoswami/Lumina-AutoML&Date)
-
-</div>
 
 ---
 
