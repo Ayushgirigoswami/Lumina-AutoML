@@ -4,7 +4,7 @@
 
 ![Lumina AutoML Banner](https://img.shields.io/badge/Lumina-AutoML-blueviolet?style=for-the-badge&logo=python&logoColor=white)
 
-**A Beautiful, Intuitive Machine Learning Pipeline**
+**A Automated, Intuitive Machine Learning Pipeline**
 
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](LICENSE)
@@ -385,6 +385,13 @@ If you find Lumina AutoML helpful, please consider:
 
 ---
 
+
+---
+👨‍💻 Author
+<div align="center">
+Ayushgiri Goswami 
+</div>
+
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=20&pause=1000&color=6C63FF&center=true&vCenter=true&width=600&lines=Happy+Machine+Learning!;Made+with+%E2%9D%A4%EF%B8%8F+by+the+Community;Star+%E2%AD%90+if+you+find+it+useful!" alt="Footer" />
 
 **[⬆ Back to Top](#-lumina-automl)**
@@ -395,8 +402,4 @@ If you find Lumina AutoML helpful, please consider:
 
 <div align="center">
 
-### 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Ayushgirigoswami/Lumina-AutoML&type=Date)](https://star-history.com/#Ayushgirigoswami/Lumina-AutoML&Date)
-
-</div>
